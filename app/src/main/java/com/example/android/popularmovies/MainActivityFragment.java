@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
  */
 public class MainActivityFragment extends Fragment {
 
+
+
     public MainActivityFragment() {
     }
 
@@ -27,7 +29,8 @@ public class MainActivityFragment extends Fragment {
         ImageView picassoView = (ImageView) returnView.findViewById(R.id.picasso_image);
 
         //Picasso.with(returnView.getContext()).load("http://i.imgur.com/DvpvklR.png").into(picassoView);
-        Picasso.with(returnView.getContext()).load("http://i.dailymail.co.uk/i/pix/2015/01/26/2508DF8C00000578-0-image-a-125_1422246959340.jpg").into(picassoView);
+        //Picasso.with(returnView.getContext()).load("http://i.dailymail.co.uk/i/pix/2015/01/26/2508DF8C00000578-0-image-a-125_1422246959340.jpg").into(picassoView);
+        Picasso.with(returnView.getContext()).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg ").into(picassoView);
         //http://barfblog.com/wp-content/uploads/2015/01/bearded_dragon_pic.jpg
         //http://i.dailymail.co.uk/i/pix/2015/01/26/2508DF8C00000578-0-image-a-125_1422246959340.jpg
         return returnView;
