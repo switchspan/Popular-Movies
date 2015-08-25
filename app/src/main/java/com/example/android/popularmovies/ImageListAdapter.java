@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -36,20 +35,6 @@ public class ImageListAdapter extends ArrayAdapter {
         if (null == convertView) {
             convertView = inflater.inflate(R.layout.list_item_movie, parent, false);
         }
-
-        //TODO: Fix this to take us to the correct screen
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-
-
-                CharSequence text = "You clicked it!";
-                int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, text, duration).show();
-            }
-        });
-
         Picasso.with(context)
                 .load(movies.get(position).getPosterImageUrl())
                 .fit()

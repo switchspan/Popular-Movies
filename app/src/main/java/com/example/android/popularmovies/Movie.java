@@ -16,6 +16,7 @@ public class Movie implements Parcelable {
 
     private static final String TAG = Movie.class.getSimpleName();
     private static final int DEFAULT_POSTER_WIDTH = 185;
+    private static final int DEFAULT_THUMBNAIL_WIDTH = 92;
 
     // create date formatter for release date
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -63,6 +64,8 @@ public class Movie implements Parcelable {
     public String getPosterImageUrl() {
         return getPosterImageUrl(DEFAULT_POSTER_WIDTH);
     }
+
+    public String getPosterThumbnailUrl() { return getPosterImageUrl(DEFAULT_THUMBNAIL_WIDTH); }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
@@ -149,6 +152,10 @@ public class Movie implements Parcelable {
         return release_date;
     }
 
+    public String getReleaseDateAsString() {
+        return dateFormat.format(getReleaseDate());
+    }
+
     public void setReleaseDate(Date release_date) {
         this.release_date = release_date;
     }
@@ -156,6 +163,8 @@ public class Movie implements Parcelable {
     public double getVoteAverage() {
         return vote_average;
     }
+
+    public String getVoteAverageAsString() { return String.valueOf(getVoteAverage()); }
 
     public void setVoteAverage(double vote_average) {
         this.vote_average = vote_average;
