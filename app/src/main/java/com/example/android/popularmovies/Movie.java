@@ -67,6 +67,8 @@ public class Movie implements Parcelable {
 
     public String getPosterThumbnailUrl() { return getPosterImageUrl(DEFAULT_THUMBNAIL_WIDTH); }
 
+    // Many thanks for the "Using parcelable" blog post on CodePath: https://guides.codepath.com/android/Using-Parcelable
+
     @Override
     public void writeToParcel(Parcel out, int flags) {
         // create a bundle for the key value pairs
