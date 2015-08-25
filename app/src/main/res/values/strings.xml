@@ -7,6 +7,6 @@
     <string name="action_sort_popular_param">popularity.desc</string>
     <string name="action_sort_rating">Highest Rated</string>
     <string name="action_sort_rating_param">vote_average.desc</string>
-    <string name="api_key">237b90b4f3037d7c7197f149554644cb</string>
+    <string name="api_key">00000000000000000000000000000000</string>
 
 </resources>
