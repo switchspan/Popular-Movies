@@ -164,7 +164,7 @@ public class Movie implements Parcelable {
         return vote_average;
     }
 
-    public String getVoteAverageAsString() { return String.valueOf(getVoteAverage()); }
+    public String getVoteAverageAsString() { return String.format("%.1f/10", getVoteAverage()); }
 
     public void setVoteAverage(double vote_average) {
         this.vote_average = vote_average;

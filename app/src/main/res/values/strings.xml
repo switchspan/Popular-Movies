@@ -1,12 +1,12 @@
 <resources>
     <string name="hello_world">Hello world!</string>
     <string name="app_name">Popular Movies</string>
-    <string name="detail_title">Movie Detail</string>
+    <string name="title_activity_detail">Movie Detail</string>
     <string name="action_settings">Settings</string>
     <string name="action_sort_popular">Most Popular</string>
     <string name="action_sort_popular_param">popularity.desc</string>
     <string name="action_sort_rating">Highest Rated</string>
     <string name="action_sort_rating_param">vote_average.desc</string>
     <string name="api_key">237b90b4f3037d7c7197f149554644cb</string>
-    <string name="title_activity_detail">DetailActivity</string>
+
 </resources>

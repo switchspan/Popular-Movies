@@ -1,34 +1,39 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.popularmovies.DetailActivityFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    tools:context=".DetailActivityFragment">
 
     <TextView android:id="@+id/detail_title_text"
-        android:text="Title"
+        android:text="Movie Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
-
-    <TextView android:id="@+id/detail_releasedate_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:theme="@style/movie_title"/>
 
     <ImageView android:id="@+id/detail_poster_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="@dimen/movie_thumb_height"
+        android:theme="@style/movie_thumbnail"/>
 
-    <TextView android:id="@+id/detail_overview_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <TextView android:id="@+id/detail_release_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/movie_info" />
 
     <TextView android:id="@+id/detail_voteaverage_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/movie_info" />
 
+    <TextView android:id="@+id/detail_overview_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/movie_overview"/>
 
-</RelativeLayout>
+</LinearLayout>
+
 
 

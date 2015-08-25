@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -27,12 +29,17 @@ public class DetailActivityFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         if(intent != null && intent.hasExtra("movie")) {
             Movie movie = intent.getParcelableExtra("movie");
-            ((TextView)rootView.findViewById(R.id.detail_title_text)).setText(movie.getTitle());
-            ((TextView)rootView.findViewById(R.id.detail_overview_text)).setText(movie.getOverview());
-            ((TextView)rootView.findViewById(R.id.detail_voteaverage_text)).setText(movie.getVoteAverageAsString());
-            ((TextView)rootView.findViewById(R.id.detail_releasedate_text)).setText(movie.getReleaseDateAsString());
+            TextView titleText = (TextView)rootView.findViewById(R.id.detail_title_text);
+            TextView overviewText = (TextView)rootView.findViewById(R.id.detail_overview_text);
+            TextView voteText = (TextView)rootView.findViewById(R.id.detail_voteaverage_text);
+            TextView releaseDateText = (TextView)rootView.findViewById(R.id.detail_release_date_text);
+
+            titleText.setText(movie.getTitle());
+            overviewText.setText(movie.getOverview());
+            voteText.setText(movie.getVoteAverageAsString());
+            releaseDateText.setText(movie.getReleaseDateAsString());
             ImageView thumbNailView = (ImageView)rootView.findViewById(R.id.detail_poster_thumbnail);
-//            Picasso.with(rootView.getContext()).load(movie.getPosterThumbnailUrl()).into(thumbNailView);
+            Picasso.with(rootView.getContext()).load(movie.getPosterThumbnailUrl()).into(thumbNailView);
         }
 
         return rootView;

@@ -89,8 +89,6 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         List<Movie> moviesList = new ArrayList<Movie>();
-        moviesList.add(new Movie(1,"/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg"));
-        moviesList.add(new Movie(2, "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg"));
 
         mMoviesAdapter = new ImageListAdapter(view.getContext(), moviesList);
 
