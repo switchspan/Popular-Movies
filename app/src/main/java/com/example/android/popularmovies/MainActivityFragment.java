@@ -64,15 +64,15 @@ public class MainActivityFragment extends Fragment {
             return true;
         }
 
-        if (id == R.id.action_sort_popular) {
+        if (id == R.id.action_sort_mostpopular) {
             FetchMoviesTask moviesTask = new FetchMoviesTask();
-            moviesTask.execute("popularity.desc");
+            moviesTask.execute(getResources().getString(R.string.action_sort_popular_param));
             return true;
         }
 
         if (id == R.id.action_sort_highestrated) {
             FetchMoviesTask moviesTask = new FetchMoviesTask();
-            moviesTask.execute("vote_average.desc");
+            moviesTask.execute(getResources().getString(R.string.action_sort_rating_param));
             return true;
         }
 
@@ -93,7 +93,7 @@ public class MainActivityFragment extends Fragment {
         mMoviesAdapter = new ImageListAdapter(view.getContext(), moviesList);
 
         FetchMoviesTask moviesTask = new FetchMoviesTask();
-        moviesTask.execute("popularity.desc");
+        moviesTask.execute(getResources().getString(R.string.action_sort_popular_param));
 
         GridView gridView = (GridView) view.findViewById(R.id.list_item_movie);
         gridView.setAdapter(mMoviesAdapter);
