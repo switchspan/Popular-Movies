@@ -1,5 +1,7 @@
 package com.example.android.popularmovies;
 
+import java.util.Date;
+
 /**
  * Created by Ken on 7/19/2015.
  */
@@ -10,6 +12,15 @@ public class Movie {
     public int id;
     public String title;
     public String posterPath;
+    public String overview;
+    public Date release_date;
+    public double vote_average;
+
+
+    public Movie(int id, String posterPath) {
+        id = id;
+        posterPath = posterPath;
+    }
 
     public String getPosterImageUrl(int width) {
         if (posterPath == null || posterPath.length() < 1) return "";
