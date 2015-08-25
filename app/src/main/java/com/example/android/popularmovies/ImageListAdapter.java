@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,14 +20,12 @@ public class ImageListAdapter extends ArrayAdapter {
     private Context context;
     private LayoutInflater inflater;
 
-//    private String[] imageUrls;
-    private List<Movie> movies;
+    private List<Movie> movies = new ArrayList<Movie>();
 
     public ImageListAdapter(Context context, List<Movie> movies) {
         super(context, R.layout.list_item_movie, movies);
 
         this.context = context;
-//        this.imageUrls = imageUrls;
         this.movies = movies;
 
         inflater = LayoutInflater.from(context);
@@ -57,5 +56,26 @@ public class ImageListAdapter extends ArrayAdapter {
                 .into((ImageView) convertView);
 
         return convertView;
+    }
+
+    @Override
+    public int getCount() {
+        return movies.size();
+    }
+
+    @Override
+    public Movie getItem(int position) {
+        return movies.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public void replace(List<Movie> movies) {
+        this.movies.clear();
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
     }
 }

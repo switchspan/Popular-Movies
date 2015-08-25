@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -34,20 +36,7 @@ public class MainActivityFragment extends Fragment {
 
     private static final String TAG = MainActivityFragment.class.getSimpleName();
 
-//    private ArrayAdapter<Movie> mMoviesAdapter;
     private ImageListAdapter mMoviesAdapter;
-
-    public static String[] testMovieImages = {
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-            "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-    };
 
     public MainActivityFragment() {
     }
@@ -103,18 +92,20 @@ public class MainActivityFragment extends Fragment {
 
         mMoviesAdapter = new ImageListAdapter(view.getContext(), moviesList);
 
+        FetchMoviesTask moviesTask = new FetchMoviesTask();
+        moviesTask.execute("popularity.desc");
+
         GridView gridView = (GridView) view.findViewById(R.id.list_item_movie);
         gridView.setAdapter(mMoviesAdapter);
 
         return view;
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
 
-        private Movie[] getMoviePostersFromJson(String moviesJsonStr) throws JSONException {
-            //TODO: Add debug logging in this method
+        private List<Movie> getMoviePostersFromJson(String moviesJsonStr) throws JSONException {
             // These are the names fo the JSON objects that need to be extracted.
             final String TMDB_RESULTS = "results";
             final String TMDB_ID = "id";
@@ -129,33 +120,34 @@ public class MainActivityFragment extends Fragment {
 
             Log.d(TAG, moviesJson.toString());
 
-            Movie[] resultMovies = new Movie[(movieArray.length() - 1)];
+            List<Movie> resultMovies = new ArrayList<Movie>();
+
             for (int i = 0; i < movieArray.length(); i++) {
                 // Get the current JSON object in the array
-                JSONObject movieJson = movieArray.getJSONObject(i);
+                JSONObject currentMovieJson = movieArray.getJSONObject(i);
 
-                Movie currentMovie = new Movie( movieJson.getInt(TMDB_ID), moviesJson.getString(TMDB_POSTER_PATH));
-                currentMovie.title = moviesJson.getString(TMDB_TITLE);
-                currentMovie.overview = moviesJson.getString(TMDB_OVERVIEW);
-                currentMovie.vote_average = movieJson.getDouble(TMDB_USER_RATING);
+                Movie currentMovie = new Movie( currentMovieJson.getInt(TMDB_ID), currentMovieJson.getString(TMDB_POSTER_PATH));
+                currentMovie.setTitle(currentMovieJson.getString(TMDB_TITLE));
+                currentMovie.setOverview(currentMovieJson.getString(TMDB_OVERVIEW));
+                currentMovie.setVoteAverage(currentMovieJson.getDouble(TMDB_USER_RATING));
 
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    currentMovie.release_date = format.parse(moviesJson.getString(TMDB_RELEASE_DATE));
+                    String releaseDate = currentMovieJson.getString(TMDB_RELEASE_DATE);
+                    currentMovie.setReleaseDate(format.parse(releaseDate));
                 } catch (ParseException pe) {
                     Log.w(TAG, "Unable to get release date!");
-                    Log.e(TAG, pe.getMessage());
-                    throw new IllegalArgumentException();
+//                    Log.e(TAG, pe.getMessage());
+//                    throw new IllegalArgumentException();
                 }
-
-                resultMovies[i] = currentMovie;
+                resultMovies.add(currentMovie);
             }
 
             return resultMovies;
         }
 
         @Override
-        protected Movie[] doInBackground(String... params) {
+        protected List<Movie> doInBackground(String... params) {
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -164,8 +156,10 @@ public class MainActivityFragment extends Fragment {
             String moviesJsonStr = null;
 
             String sort_by = "popularity.desc";
-            //String api_key = "0000000000000000000000000"; //TODO: add the correct API key here
-            String api_key = "237b90b4f3037d7c7197f149554644cb";
+
+            if (params[0] != null) sort_by = params[0].trim();
+
+            String api_key = getResources().getString(R.string.api_key); //TODO: check strings.xml for proper api key
 
             try {
                 // Construct the URL for the movie database API query
@@ -182,6 +176,34 @@ public class MainActivityFragment extends Fragment {
 
                 Log.d(TAG, builtUri.toString());
                 URL url = new URL(builtUri.toString());
+
+                // Create the request to the movie database API
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a string
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // no data...nothing to do
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                moviesJsonStr = buffer.toString();
 
 
             } catch (IOException e) {
@@ -214,13 +236,11 @@ public class MainActivityFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(Movie[] movies) {
+        protected void onPostExecute(List<Movie> movies) {
             if (movies != null) {
                 Log.d(TAG, "Movies found - Adding movies");
                 mMoviesAdapter.clear();
-                for (Movie movie : movies) {
-                    mMoviesAdapter.add(movie);
-                }
+                mMoviesAdapter.replace(movies);
             }
         }
 
