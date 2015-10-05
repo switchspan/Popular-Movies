@@ -72,6 +72,8 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Picasso.with(getContext())
                     .load(imageUrl)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.image_error)
                     .into(thumbnailImageView);
         } else {
             Log.i(TAG, String.format("No image found for URL: %s", imageUrl));
