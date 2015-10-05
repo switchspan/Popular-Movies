@@ -40,7 +40,12 @@ public class DetailActivityFragment extends Fragment {
             voteText.setText(movie.getVoteAverageAsString());
             releaseDateText.setText(movie.getReleaseDateAsString());
             ImageView thumbNailView = (ImageView)rootView.findViewById(R.id.detail_poster_thumbnail);
-            Picasso.with(rootView.getContext()).load(movie.getPosterThumbnailUrl()).into(thumbNailView);
+
+            Picasso.with(rootView.getContext())
+                    .load(movie.getPosterThumbnailUrl())
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.image_error)
+                    .into(thumbNailView);
         }
 
         return rootView;

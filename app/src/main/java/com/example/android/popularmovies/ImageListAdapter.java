@@ -37,6 +37,8 @@ public class ImageListAdapter extends ArrayAdapter {
         }
         Picasso.with(context)
                 .load(movies.get(position).getPosterImageUrl())
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_error)
                 .fit()
                 .into((ImageView) convertView);
 

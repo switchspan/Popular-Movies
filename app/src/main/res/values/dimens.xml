@@ -3,12 +3,14 @@
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="activity_padding_top">0dp</dimen>
-    <dimen name="activity_padding_bottom">0dp</dimen>
+    <dimen name="activity_padding_bottom">5dp</dimen>
     <dimen name="activity_padding_right">0dp</dimen>
     <dimen name="activity_padding_left">0dp</dimen>
     <dimen name="movie_poster_height">277dp</dimen>
     <dimen name="movie_poster_width">185dp</dimen>
     <dimen name="movie_thumb_height">150dp</dimen>
     <dimen name="movie_poster_margin_top">0dp</dimen>
-    <dimen name="movie_poster_margin_bottom">0dp</dimen>
+    <dimen name="movie_poster_margin_bottom">5dp</dimen>
+    <dimen name="movie_poster_padding_top">0dp</dimen>
+    <dimen name="movie_poster_padding_bottom">5dp</dimen>
 </resources>

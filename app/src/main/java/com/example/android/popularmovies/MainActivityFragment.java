@@ -37,8 +37,8 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         loadState(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -93,6 +93,7 @@ public class MainActivityFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(SORT_KEY, _sort_by);
         outState.putParcelableArrayList(MOVIES_KEY, _movies);
+
     }
 
     private void initializeMovieList(View view) {

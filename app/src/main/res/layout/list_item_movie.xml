@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_item_movie_imageview"
-    android:layout_width="@dimen/movie_poster_width"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/movie_poster_height"
     android:layout_marginTop="@dimen/movie_poster_margin_top"
     android:layout_marginBottom="@dimen/movie_poster_margin_bottom" />
