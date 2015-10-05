@@ -55,7 +55,6 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         if (movie == null) return;
 
         loadMovieImage(movieListItemView, movie);
-//        loadMovieName(movieListItemView, movie);
     }
 
     private void loadMovieImage(View movieListItemView, Movie movie) {
@@ -79,9 +78,4 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
             thumbnailImageView.setImageBitmap(null);
         }
     }
-
-//    private void loadMovieName(View movieListItemView, Movie movie) {
-//        Log.v(TAG, "loadMovieName");
-//        TextView movieNameView = (TextView) movieListItemView.findViewById(R.id.list_item_movie)
-//    }
 }

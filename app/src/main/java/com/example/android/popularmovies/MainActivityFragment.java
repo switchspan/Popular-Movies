@@ -130,7 +130,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void initializeNewState() {
-        _movies = new ArrayList<Movie>();
+        _movies = new ArrayList<>();
         _sort_by = "popularity.desc";
         _canInitializeMoviesFromSavedState = false;
     }

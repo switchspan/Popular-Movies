@@ -97,8 +97,8 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
             Log.e(TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-        // This will only happen if there was an error getting or parsing the movie data
-        return null;
+
+        return null; // This will only happen if there was an error getting or parsing the movie data
     }
 
     private URL createApiUrl(String sort_by) {
@@ -137,20 +137,6 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         } catch (IOException ex) {
             Log.e(TAG, ex.getLocalizedMessage());
         }
-        return null;
-    }
-
-    private InputStream getInputStreamFromUrl(URL url) {
-        // Create the request to the movie database API
-       try {
-           HttpURLConnection urlConnection = null;
-           urlConnection = (HttpURLConnection) url.openConnection();
-           urlConnection.setRequestMethod("GET");
-           urlConnection.connect();
-           return urlConnection.getInputStream();
-       } catch (IOException ex) {
-           Log.e(TAG, ex.getLocalizedMessage());
-       }
         return null;
     }
 
