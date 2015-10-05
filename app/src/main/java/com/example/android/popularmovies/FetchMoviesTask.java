@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,38 +45,24 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
+        String moviesJsonStr = null; // Will contain the raw JSON response as a string.
 
-        // Will contain the raw JSON response as a string.
-        String moviesJsonStr = null;
-
-        if (validateParameters(params)) return null;
+        if (!hasValidParameters(params)) return null;
 
         String sort_by = params[0].trim();
 
-
-
         try {
-            Uri builtUri = createApiUri(sort_by, discover_base_url, api_key);
-
-
-            Log.d(TAG, builtUri.toString());
-            URL url = new URL(builtUri.toString());
-
-            // Create the request to the movie database API
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            // Read the input stream into a string
+            URL url = createApiUrl(sort_by);
+            urlConnection = getOpenConnectionFromUrl(url);
+            
             InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // no data...nothing to do
-                return null;
-            }
+
+            if (inputStream == null) return null; // no data...nothing to do
+
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
+            StringBuffer buffer = new StringBuffer();
             while ((line = reader.readLine()) != null) {
                 // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
                 // But it does make debugging a *lot* easier if you print out the completed
@@ -83,13 +70,9 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
                 buffer.append(line + "\n");
             }
 
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
+            if (buffer.length() == 0) return null; // Stream was empty.  No point in parsing.
+
             moviesJsonStr = buffer.toString();
-
-
         } catch (IOException e) {
             Log.e(TAG, "Error", e);
             // If the code didn't successfully get the movies data, there's no point in attempting
@@ -114,76 +97,112 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
             Log.e(TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-
         // This will only happen if there was an error getting or parsing the movie data
         return null;
     }
 
-    private Uri createApiUri(String sort_by) {
+    private URL createApiUrl(String sort_by) {
         // Construct the URL for the movie database API query
         // Possible parameters are available at the Movie Database's API page, at
         // https://www.themoviedb.org/documentation/api
         final String SORTBY_PARAM = "sort_by";
         final String APIKEY_PARAM = "api_key";
         String discover_base_url;
-        String api_key; //TODO: check strings.xml for proper api key
+        String api_key;
 
         discover_base_url = _context.getResources().getString(R.string.movie_api_discover_endpoint);
         api_key = _context.getResources().getString(R.string.api_key);
 
-        return Uri.parse(discover_base_url).buildUpon()
+        try {
+            Uri builtUri = Uri.parse(discover_base_url).buildUpon()
                 .appendQueryParameter(SORTBY_PARAM, sort_by)
                 .appendQueryParameter(APIKEY_PARAM, api_key)
                 .build();
+
+            Log.d(TAG, builtUri.toString());
+            return new URL(builtUri.toString());
+        } catch (MalformedURLException ex) {
+            Log.e(TAG, ex.getLocalizedMessage());
+        }
+        return null;
     }
 
-    private boolean validateParameters(String[] params) {
+    private HttpURLConnection getOpenConnectionFromUrl(URL url) {
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+            return urlConnection;
+        } catch (IOException ex) {
+            Log.e(TAG, ex.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    private InputStream getInputStreamFromUrl(URL url) {
+        // Create the request to the movie database API
+       try {
+           HttpURLConnection urlConnection = null;
+           urlConnection = (HttpURLConnection) url.openConnection();
+           urlConnection.setRequestMethod("GET");
+           urlConnection.connect();
+           return urlConnection.getInputStream();
+       } catch (IOException ex) {
+           Log.e(TAG, ex.getLocalizedMessage());
+       }
+        return null;
+    }
+
+    private boolean hasValidParameters(String[] params) {
         if (params.length != 1) {
             Log.e(TAG, "Invalid number of parameters passed!");
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     private ArrayList<Movie> getMoviePostersFromJson(String moviesJsonStr) throws JSONException {
+        Log.v(TAG, "getMoviePostersFromJson");
         // These are the names fo the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
+        ArrayList<Movie> resultMovies = new ArrayList<>();
+        JSONObject moviesJson = new JSONObject(moviesJsonStr);
+        Log.d(TAG, moviesJson.toString());
+
+        JSONArray movieArray = moviesJson.getJSONArray(TMDB_RESULTS);
+
+        for (int i = 0; i < movieArray.length(); i++) {
+            JSONObject currentMovieJson = movieArray.getJSONObject(i); // Get the current JSON object in the array
+            resultMovies.add(mapMovieFromJsonObject(currentMovieJson));
+        }
+        return resultMovies;
+    }
+
+    private Movie mapMovieFromJsonObject(JSONObject currentMovieJson) {
         final String TMDB_ID = "id";
         final String TMDB_TITLE = "title";
         final String TMDB_POSTER_PATH = "poster_path";
         final String TMDB_OVERVIEW = "overview";
         final String TMDB_USER_RATING = "vote_average";
         final String TMDB_RELEASE_DATE = "release_date";
+        Movie currentMovie = null;
 
-        Log.v(TAG, "getMoviePostersFromJson");
-        JSONObject moviesJson = new JSONObject(moviesJsonStr);
-        JSONArray movieArray = moviesJson.getJSONArray(TMDB_RESULTS);
-        Log.d(TAG, moviesJson.toString());
-
-        ArrayList<Movie> resultMovies = new ArrayList<>();
-
-        for (int i = 0; i < movieArray.length(); i++) {
-            // Get the current JSON object in the array
-            JSONObject currentMovieJson = movieArray.getJSONObject(i);
-
-            Movie currentMovie = new Movie( currentMovieJson.getInt(TMDB_ID), currentMovieJson.getString(TMDB_POSTER_PATH));
+        try {
+            currentMovie = new Movie( currentMovieJson.getInt(TMDB_ID), currentMovieJson.getString(TMDB_POSTER_PATH));
             currentMovie.setTitle(currentMovieJson.getString(TMDB_TITLE));
             currentMovie.setOverview(currentMovieJson.getString(TMDB_OVERVIEW));
             currentMovie.setVoteAverage(currentMovieJson.getDouble(TMDB_USER_RATING));
-
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                String releaseDate = currentMovieJson.getString(TMDB_RELEASE_DATE);
-                currentMovie.setReleaseDate(format.parse(releaseDate));
-            } catch (ParseException pe) {
-                Log.w(TAG, "Unable to get release date!");
-//                    Log.e(TAG, pe.getMessage());
-//                    throw new IllegalArgumentException();
-            }
-            resultMovies.add(currentMovie);
+            String releaseDate = currentMovieJson.getString(TMDB_RELEASE_DATE);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            currentMovie.setReleaseDate(format.parse(releaseDate));
+        } catch (ParseException pe) {
+            Log.w(TAG, "Unable to get release date!");
+        } catch (JSONException ex) {
+            Log.e(TAG, ex.getLocalizedMessage());
         }
 
-        return resultMovies;
+        return currentMovie;
     }
 
     @Override
@@ -206,8 +225,4 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         _movies.addAll(movies);
         _movieAdapter.addAll(movies);
     }
-
-
-
-
 }

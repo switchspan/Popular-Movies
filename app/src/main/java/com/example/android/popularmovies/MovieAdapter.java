@@ -69,12 +69,13 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private void loadImageIntoImageView(Movie movie, ImageView thumbnailImageView) {
         Log.v(TAG, "loadImageIntoImageView");
-        if (movie.getPosterThumbnailUrl() != null && movie.getPosterThumbnailUrl().isEmpty()) {
+        String imageUrl = movie.getPosterImageUrl();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
             Picasso.with(getContext())
-                    .load(movie.getPosterThumbnailUrl())
+                    .load(imageUrl)
                     .into(thumbnailImageView);
         } else {
-            Log.i(TAG, String.format("No image found for URL: %s", movie.getPosterThumbnailUrl()));
+            Log.i(TAG, String.format("No image found for URL: %s", imageUrl));
             thumbnailImageView.setImageBitmap(null);
         }
     }
