@@ -191,9 +191,6 @@ public class FetchTrailersTask  extends AsyncTask<String, Void, ArrayList<Traile
 
         if (trailers != null && !trailers.isEmpty()) {
             loadTrailers(trailers);
-        } else {
-            String toastMessage = "No trailers where found!";
-            Toast.makeText(_context, toastMessage, Toast.LENGTH_LONG).show();
         }
     }
 

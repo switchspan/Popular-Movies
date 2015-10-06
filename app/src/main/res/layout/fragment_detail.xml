@@ -6,9 +6,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="1dp"
         android:orientation="vertical"
         tools:context=".DetailActivityFragment">
 
@@ -70,13 +69,23 @@
             android:focusable="true"
             android:gravity="center" />
 
+        <TextView
+            android:id="@+id/movie_review_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10sp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="20dp"
+            android:text="Reviews:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <ListView
             android:id="@+id/list_item_review"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:drawSelectorOnTop="true"
-            android:focusable="true"
+            android:focusable="false"
             android:gravity="center" />
     </LinearLayout>
 

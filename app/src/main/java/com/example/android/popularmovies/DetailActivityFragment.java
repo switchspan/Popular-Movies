@@ -57,8 +57,7 @@ public class DetailActivityFragment extends Fragment {
         // This in part from the Udacity discussion forums Sabo/Nico (https://discussions.udacity.com/t/how-do-i-use-intent-to-get-and-display-movie-details/27778/8)
         Intent intent = getActivity().getIntent();
         if(intent != null && intent.hasExtra("movie")) {
-            initializeTrailersAdapter();
-            initializeReviewsAdapter();
+            initializeAdapters();
             updateViewsFromIntent(rootView, intent);
             getTrailers(Integer.toString(_movie.getId()));
             getReviews(Integer.toString(_movie.getId()));
@@ -98,11 +97,8 @@ public class DetailActivityFragment extends Fragment {
                 .into(thumbNailView);
     }
 
-    public void initializeTrailersAdapter() {
+    public void initializeAdapters() {
         _trailersAdapter = new TrailerAdapter(getActivity(), new ArrayList<Trailer>());
-    }
-
-    public void initializeReviewsAdapter() {
         _reviewsAdapter = new ReviewAdapter(getActivity(), new ArrayList<Review>());
     }
 

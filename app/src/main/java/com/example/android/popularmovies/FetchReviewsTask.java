@@ -187,9 +187,6 @@ public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>>
 
         if (reviews != null && !reviews.isEmpty()) {
             loadReviews(reviews);
-        } else {
-            String toastMessage = "No trailers where found!";
-            Toast.makeText(_context, toastMessage, Toast.LENGTH_LONG).show();
         }
     }
 
