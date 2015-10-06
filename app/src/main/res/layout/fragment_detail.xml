@@ -46,10 +46,16 @@
             android:layout_height="wrap_content"
             android:padding="10dp"/>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
         <TextView
             android:id="@+id/movie_trailer_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10sp"
             android:paddingLeft="10dp"
             android:paddingBottom="20dp"
             android:text="Trailers:"
