@@ -2,6 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+   <TextView
+        android:id="@+id/movie_review_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Cool Review!"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
 </LinearLayout>

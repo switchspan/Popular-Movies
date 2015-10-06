@@ -29,9 +29,13 @@ public class DetailActivityFragment extends Fragment {
 
     private TrailerAdapter _trailersAdapter;
     private ArrayList<Trailer> _trailers;
+    private ReviewAdapter _reviewsAdapter;
+    private ArrayList<Review> _reviews;
     private Movie _movie;
-    private FetchTrailersTask _fetchTask = null;
+    private FetchTrailersTask _fetchTrailersTask = null;
+    private FetchReviewsTask _fetchReviewsTask = null;
     private Boolean _canInitializeTrailersFromSavedState;
+    private Boolean _canInitializeReviewsFromSavedState;
 
     public DetailActivityFragment() {
     }
@@ -54,9 +58,12 @@ public class DetailActivityFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         if(intent != null && intent.hasExtra("movie")) {
             initializeTrailersAdapter();
+            initializeReviewsAdapter();
             updateViewsFromIntent(rootView, intent);
             getTrailers(Integer.toString(_movie.getId()));
+            getReviews(Integer.toString(_movie.getId()));
             initializeTrailerList(rootView);
+            initializeReviewList(rootView);
         }
 
         return rootView;
@@ -95,6 +102,10 @@ public class DetailActivityFragment extends Fragment {
         _trailersAdapter = new TrailerAdapter(getActivity(), new ArrayList<Trailer>());
     }
 
+    public void initializeReviewsAdapter() {
+        _reviewsAdapter = new ReviewAdapter(getActivity(), new ArrayList<Review>());
+    }
+
     private void initializeTrailerList(View view) {
         ListView listView = (ListView) view.findViewById(R.id.list_item_trailer);
         listView.setAdapter(_trailersAdapter);
@@ -111,6 +122,11 @@ public class DetailActivityFragment extends Fragment {
         });
     }
 
+    private void initializeReviewList(View view) {
+        ListView listView = (ListView) view.findViewById(R.id.list_item_review);
+        listView.setAdapter(_reviewsAdapter);
+    }
+
     private void loadState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             intializeStateFromSavedState(savedInstanceState);
@@ -121,23 +137,39 @@ public class DetailActivityFragment extends Fragment {
 
     private void intializeStateFromSavedState(Bundle savedInstanceState) {
         _trailers = savedInstanceState.getParcelableArrayList(TRAILERS_KEY);
+        _reviews = savedInstanceState.getParcelableArrayList(REVIEWS_KEY);
         _canInitializeTrailersFromSavedState = true;
+        _canInitializeReviewsFromSavedState = true;
     }
 
     private void initializeNewState() {
         _trailers = new ArrayList<>();
+        _reviews = new ArrayList<>();
         _canInitializeTrailersFromSavedState = false;
+        _canInitializeReviewsFromSavedState = false;
     }
 
     private void getTrailers(String movieId) {
         Log.v(TAG, "getTrailers");
 
-        cancelAnyFetchTasks();
+        cancelAnyTrailerFetchTasks();
 
         if (_canInitializeTrailersFromSavedState) {
             restoreTrailersFromState();
         } else {
             startTrailerFetchTask(movieId);
+        }
+    }
+
+    private void getReviews(String movieId) {
+        Log.v(TAG, "getReviews");
+
+        cancelAnyReviewFetchTasks();
+
+        if (_canInitializeReviewsFromSavedState) {
+            restoreReviewsFromState();
+        } else {
+            startReviewFetchTask(movieId);
         }
     }
 
@@ -147,14 +179,31 @@ public class DetailActivityFragment extends Fragment {
         _trailersAdapter.addAll(_trailers);
     }
 
-    private void cancelAnyFetchTasks() {
-        Log.v(TAG, "cancelAnyFetchTasks");
-        if (_fetchTask != null && _fetchTask.getStatus() != AsyncTask.Status.FINISHED) _fetchTask.cancel(true);
+    private void restoreReviewsFromState() {
+        Log.v(TAG, "restoreReviewsFromState");
+        _reviewsAdapter.clear();
+        _reviewsAdapter.addAll(_reviews);
+    }
+
+    private void cancelAnyTrailerFetchTasks() {
+        Log.v(TAG, "cancelAnyTrailerFetchTasks");
+        if (_fetchTrailersTask != null && _fetchTrailersTask.getStatus() != AsyncTask.Status.FINISHED) _fetchTrailersTask.cancel(true);
+    }
+
+    private void cancelAnyReviewFetchTasks() {
+        Log.v(TAG, "cancelAnyReviewFetchTasks");
+        if (_fetchReviewsTask != null && _fetchReviewsTask.getStatus() != AsyncTask.Status.FINISHED) _fetchReviewsTask.cancel(true);
     }
 
     private void startTrailerFetchTask(String movieId) {
         Log.v(TAG, "startTrailerFetchTask");
-        _fetchTask = new FetchTrailersTask(_trailers, _trailersAdapter, getActivity());
-        _fetchTask.execute(movieId);
+        _fetchTrailersTask = new FetchTrailersTask(_trailers, _trailersAdapter, getActivity());
+        _fetchTrailersTask.execute(movieId);
+    }
+
+    private void startReviewFetchTask(String movieId) {
+        Log.v(TAG, "startReviewFetchTaskFetchTask");
+        _fetchReviewsTask = new FetchReviewsTask(_reviews, _reviewsAdapter, getActivity());
+        _fetchReviewsTask.execute(movieId);
     }
 }

@@ -62,28 +62,4 @@ public class TrailerAdapter extends ArrayAdapter<Trailer> {
             trailerLabel.setText(trailer.getTrailerLabel());
         }
     }
-
-//    private void loadMovieImage(View movieListItemView, Movie movie) {
-//        Log.v(TAG, "loadMovieImage");
-//
-//        ImageView thumbnailImageView = (ImageView) movieListItemView.findViewById(R.id.list_item_movie_imageview);
-//        if (thumbnailImageView != null) {
-//            loadImageIntoImageView(movie, thumbnailImageView);
-//        }
-//    }
-
-//    private void loadImageIntoImageView(Movie movie, ImageView thumbnailImageView) {
-//        Log.v(TAG, "loadImageIntoImageView");
-//        String imageUrl = movie.getPosterImageUrl();
-//        if (imageUrl != null && !imageUrl.isEmpty()) {
-//            Picasso.with(getContext())
-//                    .load(imageUrl)
-//                    .placeholder(R.drawable.image_placeholder)
-//                    .error(R.drawable.image_error)
-//                    .into(thumbnailImageView);
-//        } else {
-//            Log.i(TAG, String.format("No image found for URL: %s", imageUrl));
-//            thumbnailImageView.setImageBitmap(null);
-//        }
-//    }
 }
