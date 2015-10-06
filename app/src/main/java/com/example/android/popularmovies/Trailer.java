@@ -12,7 +12,6 @@ import android.util.Log;
 public class Trailer implements Parcelable {
 
     private final String TAG = Trailer.class.getSimpleName();
-    private final String YOUTUBE_BASE_URL = "http://www.youtube.com/watch";
     private final String VIDEO_KEY = "v";
 
     // parcel keys
@@ -64,14 +63,12 @@ public class Trailer implements Parcelable {
             // read the bundle containing the key value pairs from the parcel
             Bundle bundle = source.readBundle();
 
-            Trailer __trailer = new Trailer(bundle.getString(KEY_ID),
+            return new Trailer(bundle.getString(KEY_ID),
                     bundle.getString(KEY_TRAILER),
                     bundle.getString(KEY_NAME),
                     bundle.getString(KEY_SITE),
                     bundle.getInt(KEY_RESOLUTIONP),
                     bundle.getString(KEY_SITE));
-
-            return __trailer;
         }
 
         @Override
@@ -134,6 +131,7 @@ public class Trailer implements Parcelable {
     }
 
     public String getYouTubeUrl() {
+        String YOUTUBE_BASE_URL = "http://www.youtube.com/watch";
         Uri builtUri = Uri.parse(YOUTUBE_BASE_URL).buildUpon()
                 .appendQueryParameter(VIDEO_KEY, trailer_key)
                 .build();

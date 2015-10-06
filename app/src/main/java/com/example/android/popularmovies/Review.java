@@ -56,12 +56,10 @@ public class Review implements Parcelable {
             // read the bundle containing the key value pairs from the parcel
             Bundle bundle = source.readBundle();
 
-            Review _review = new Review(bundle.getString(KEY_ID),
+            return new Review(bundle.getString(KEY_ID),
                     bundle.getString(KEY_AUTHOR),
                     bundle.getString(KEY_CONTENT),
                     bundle.getString(KEY_URL));
-
-            return _review;
         }
 
         @Override
