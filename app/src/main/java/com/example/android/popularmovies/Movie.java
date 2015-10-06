@@ -65,7 +65,9 @@ public class Movie implements Parcelable {
         return getPosterImageUrl(DEFAULT_POSTER_WIDTH);
     }
 
-    public String getPosterThumbnailUrl() { return getPosterImageUrl(DEFAULT_THUMBNAIL_WIDTH); }
+    public String getPosterThumbnailUrl() {
+        return getPosterImageUrl(DEFAULT_THUMBNAIL_WIDTH);
+    }
 
     // Many thanks for the "Using parcelable" blog post on CodePath: https://guides.codepath.com/android/Using-Parcelable
 
@@ -78,7 +80,8 @@ public class Movie implements Parcelable {
         bundle.putString(KEY_TITLE, title);
         bundle.putString(KEY_POSTER, posterPath);
         bundle.putString(KEY_OVERVIEW, overview);
-        bundle.putString(KEY_RELEASE_DATE, dateFormat.format(release_date));
+        if (release_date != null)
+            bundle.putString(KEY_RELEASE_DATE, dateFormat.format(release_date));
         bundle.putDouble(KEY_VOTE_AVERAGE, vote_average);
 
         out.writeBundle(bundle);
@@ -162,7 +165,9 @@ public class Movie implements Parcelable {
         return vote_average;
     }
 
-    public String getVoteAverageAsString() { return String.format("%.1f/10", getVoteAverage()); }
+    public String getVoteAverageAsString() {
+        return String.format("%.1f/10", getVoteAverage());
+    }
 
     public void setVoteAverage(double vote_average) {
         this.vote_average = vote_average;

@@ -9,4 +9,6 @@
     <string name="action_sort_rating_param">vote_average.desc</string>
     <string name="api_key">237b90b4f3037d7c7197f149554644cb</string>
     <string name="movie_api_discover_endpoint">http://api.themoviedb.org/3/discover/movie</string>
+    <string name="movie_api_trailer_endpoint">http://api.themoviedb.org/3/movie/</string>
+    <string name="movie_api_review_endpoint">http://api.themoviedb.org/3/movie/</string>
 </resources>
