@@ -73,6 +73,7 @@ public class DetailActivityFragment extends Fragment {
         Log.v(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(TRAILERS_KEY, _trailers);
+        outState.putParcelableArrayList(REVIEWS_KEY, _reviews);
 
     }
 
@@ -171,8 +172,8 @@ public class DetailActivityFragment extends Fragment {
 
     private void restoreTrailersFromState() {
         Log.v(TAG, "restoreTrailersFromState");
-        _trailersAdapter.clear();
-        _trailersAdapter.addAll(_trailers);
+            _trailersAdapter.clear();
+            _trailersAdapter.addAll(_trailers);
     }
 
     private void restoreReviewsFromState() {

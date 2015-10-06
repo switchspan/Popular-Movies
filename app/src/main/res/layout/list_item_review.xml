@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
    <TextView
-        android:id="@+id/movie_review_label"
+        android:id="@+id/reviewer_author_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Cool Review!"
+        android:text="Reviewer says:"
         android:padding="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/reviewer_comment_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reviewer_author_text"
+        android:text="Loved the movie!"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/reviewer_comment_text"
         android:background="@android:color/darker_gray"/>
 
-</LinearLayout>
+</RelativeLayout>

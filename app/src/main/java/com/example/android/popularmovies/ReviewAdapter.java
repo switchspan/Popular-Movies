@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
 
         View reviewListItemView = getReviewListItemView(currentView, parent);
         Review review = getItem(position);
+        loadReviewListItemView(reviewListItemView, review);
 
         return reviewListItemView;
     }
@@ -39,40 +41,18 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         View listItemView;
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        listItemView = inflater.inflate(R.layout.list_item_review, parent,         false);
+        listItemView = inflater.inflate(R.layout.list_item_review, parent, false);
 
         return listItemView;
     }
 
-    //    private void loadMovieListItemView(View movieListItemView, Movie movie) {
-    //        Log.v(TAG, "loadMovieListItemView");
-    //
-    //        if (movie == null) return;
-    //
-    //        loadMovieImage(movieListItemView, movie);
-    //    }
-
-    //    private void loadMovieImage(View movieListItemView, Movie movie) {
-    //        Log.v(TAG, "loadMovieImage");
-    //
-    //        ImageView thumbnailImageView = (ImageView) movieListItemView.findViewById(R.id.list_item_movie_imageview);
-    //        if (thumbnailImageView != null) {
-    //            loadImageIntoImageView(movie, thumbnailImageView);
-    //        }
-    //    }
-
-    //    private void loadImageIntoImageView(Movie movie, ImageView thumbnailImageView) {
-    //        Log.v(TAG, "loadImageIntoImageView");
-    //        String imageUrl = movie.getPosterImageUrl();
-    //        if (imageUrl != null && !imageUrl.isEmpty()) {
-    //            Picasso.with(getContext())
-    //                    .load(imageUrl)
-    //                    .placeholder(R.drawable.image_placeholder)
-    //                    .error(R.drawable.image_error)
-    //                    .into(thumbnailImageView);
-    //        } else {
-    //            Log.i(TAG, String.format("No image found for URL: %s", imageUrl));
-    //            thumbnailImageView.setImageBitmap(null);
-    //        }
-    //    }
+    private void loadReviewListItemView(View reviewListItemView, Review review) {
+        Log.v(TAG, "loadReviewListItemView");
+        TextView reviewerAuthor = (TextView) reviewListItemView.findViewById(R.id.reviewer_author_text);
+        TextView reviewerComments = (TextView) reviewListItemView.findViewById(R.id.reviewer_comment_text);
+        if (reviewerAuthor != null && reviewerComments != null) {
+            reviewerAuthor.setText(String.format("%s says:", review.getAuthor()));
+            reviewerComments.setText(String.format("%s", review.getContent()));
+        }
+    }
 }
