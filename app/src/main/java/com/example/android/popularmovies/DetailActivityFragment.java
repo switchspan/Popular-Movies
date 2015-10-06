@@ -29,12 +29,14 @@ public class DetailActivityFragment extends Fragment {
     private static final String TAG = DetailActivityFragment.class.getSimpleName();
     private static final String TRAILERS_KEY = "trailers";
     private static final String REVIEWS_KEY = "reviews";
+    private static final String FAVORITES_KEY = "favorites";
 
     private TrailerAdapter _trailersAdapter;
     private ArrayList<Trailer> _trailers;
     private ReviewAdapter _reviewsAdapter;
     private ArrayList<Review> _reviews;
     private Movie _movie;
+    private ArrayList<Movie> _favoriteMovies;
     private FetchTrailersTask _fetchTrailersTask = null;
     private FetchReviewsTask _fetchReviewsTask = null;
     private Boolean _canInitializeTrailersFromSavedState;
@@ -78,6 +80,7 @@ public class DetailActivityFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(TRAILERS_KEY, _trailers);
         outState.putParcelableArrayList(REVIEWS_KEY, _reviews);
+        outState.putParcelableArrayList(FAVORITES_KEY, _favoriteMovies);
 
     }
 
@@ -139,6 +142,7 @@ public class DetailActivityFragment extends Fragment {
     private void initializeStateFromSavedState(Bundle savedInstanceState) {
         _trailers = savedInstanceState.getParcelableArrayList(TRAILERS_KEY);
         _reviews = savedInstanceState.getParcelableArrayList(REVIEWS_KEY);
+        _favoriteMovies = savedInstanceState.getParcelableArrayList(FAVORITES_KEY);
         _canInitializeTrailersFromSavedState = true;
         _canInitializeReviewsFromSavedState = true;
     }
@@ -146,6 +150,7 @@ public class DetailActivityFragment extends Fragment {
     private void initializeNewState() {
         _trailers = new ArrayList<>();
         _reviews = new ArrayList<>();
+        _favoriteMovies = new ArrayList<>();
         _canInitializeTrailersFromSavedState = false;
         _canInitializeReviewsFromSavedState = false;
     }
@@ -212,13 +217,20 @@ public class DetailActivityFragment extends Fragment {
         Button button = (Button) v.findViewById(R.id.detail_favorite_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String toastMessage = String.format("%s marked as favorite!", _movie.getTitle());
-                Toast.makeText(v.getContext(), toastMessage, Toast.LENGTH_LONG).show();
+                updateFavoriteMoviesList(v);
             }
         });
     }
 
-
-
-
+    private void updateFavoriteMoviesList(View v) {
+        String toastMessage;
+        if (_favoriteMovies.contains(_movie)) {
+            _favoriteMovies.remove(_movie);
+            toastMessage = String.format("Removed %s", _movie.getTitle());
+        } else {
+            _favoriteMovies.add(_movie);
+            toastMessage = String.format("Added %s", _movie.getTitle());
+        }
+        Toast.makeText(v.getContext(), toastMessage, Toast.LENGTH_SHORT).show();
+    }
 }
