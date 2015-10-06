@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -20,35 +20,63 @@
 
         <ImageView
             android:id="@+id/detail_poster_thumbnail"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/movie_thumb_width"
             android:layout_height="@dimen/movie_thumb_height"
-            android:theme="@style/movie_thumbnail" />
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:theme="@style/movie_thumbnail"
+            android:layout_below="@+id/detail_title_text"
+            android:layout_alignParentLeft="true"
+            />
 
         <TextView
             android:id="@+id/detail_release_date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Release Date"
             android:paddingLeft="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/detail_title_text"
+            android:layout_toRightOf="@+id/detail_poster_thumbnail"
+            />
 
         <TextView
             android:id="@+id/detail_voteaverage_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Average Votes"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/detail_release_date_text"
+            android:layout_toRightOf="@+id/detail_poster_thumbnail"/>
+
+        <Button
+            android:id="@+id/detail_favorite_button"
+            android:layout_width="90dp"
+            android:layout_height="60dp"
+            android:text="MARK AS FAVORITE"
+            android:layout_gravity="center"
+            android:layout_below="@+id/detail_voteaverage_text"
+            android:layout_toRightOf="@+id/detail_poster_thumbnail"
+            android:onClick="markAsFavorite"/>
 
         <TextView
             android:id="@+id/detail_overview_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Overview text"
+            android:layout_below="@+id/detail_poster_thumbnail"
             android:padding="10dp"/>
 
         <View
+            android:id="@+id/detail_line_spacer"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/detail_overview_text"/>
 
         <TextView
             android:id="@+id/movie_trailer_header"
@@ -56,9 +84,10 @@
             android:layout_height="wrap_content"
             android:paddingTop="10sp"
             android:paddingLeft="10dp"
-            android:paddingBottom="20dp"
+            android:paddingBottom="10dp"
             android:text="Trailers:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/detail_line_spacer"/>
 
         <ListView
             android:id="@+id/list_item_trailer"
@@ -67,7 +96,8 @@
             android:clickable="true"
             android:drawSelectorOnTop="true"
             android:focusable="true"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_below="@+id/movie_trailer_header"/>
 
         <TextView
             android:id="@+id/movie_review_header"
@@ -75,9 +105,10 @@
             android:layout_height="wrap_content"
             android:paddingTop="10sp"
             android:paddingLeft="10dp"
-            android:paddingBottom="20dp"
+            android:paddingBottom="10dp"
             android:text="Reviews:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/list_item_trailer"/>
 
         <ListView
             android:id="@+id/list_item_review"
@@ -86,13 +117,15 @@
             android:clickable="true"
             android:drawSelectorOnTop="true"
             android:focusable="false"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_below="@+id/movie_review_header"/>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/list_item_review"/>
+    </RelativeLayout>
 
 </ScrollView>
 

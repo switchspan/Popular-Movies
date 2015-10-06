@@ -72,13 +72,17 @@ public class MainActivityFragment extends Fragment {
         }
 
         if (id == R.id.action_sort_mostpopular) {
-
             _sort_by = getResources().getString(R.string.action_sort_popular_param);
             _canInitializeMoviesFromSavedState = false;
         }
 
         if (id == R.id.action_sort_highestrated) {
             _sort_by = getResources().getString(R.string.action_sort_rating_param);
+            _canInitializeMoviesFromSavedState = false;
+        }
+
+        if (id == R.id.action_sort_favorite) {
+            _sort_by = getResources().getString(R.string.action_sort_popular_param);
             _canInitializeMoviesFromSavedState = false;
         }
 

@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class ReviewAdapter extends ArrayAdapter<Review> {
     private final String TAG = ReviewAdapter.class.getSimpleName();
 
-    public ReviewAdapter(Context context, ArrayList<Review> trailers) {
-        super(context, R.layout.list_item_trailer, trailers);
+    public ReviewAdapter(Context context, ArrayList<Review> reviews) {
+        super(context, R.layout.list_item_review, reviews);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -63,6 +66,7 @@ public class DetailActivityFragment extends Fragment {
             getReviews(Integer.toString(_movie.getId()));
             initializeTrailerList(rootView);
             initializeReviewList(rootView);
+            initializeFavoriteButton(rootView);
         }
 
         return rootView;
@@ -126,13 +130,13 @@ public class DetailActivityFragment extends Fragment {
 
     private void loadState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            intializeStateFromSavedState(savedInstanceState);
+            initializeStateFromSavedState(savedInstanceState);
         } else {
             initializeNewState();
         }
     }
 
-    private void intializeStateFromSavedState(Bundle savedInstanceState) {
+    private void initializeStateFromSavedState(Bundle savedInstanceState) {
         _trailers = savedInstanceState.getParcelableArrayList(TRAILERS_KEY);
         _reviews = savedInstanceState.getParcelableArrayList(REVIEWS_KEY);
         _canInitializeTrailersFromSavedState = true;
@@ -203,4 +207,18 @@ public class DetailActivityFragment extends Fragment {
         _fetchReviewsTask = new FetchReviewsTask(_reviews, _reviewsAdapter, getActivity());
         _fetchReviewsTask.execute(movieId);
     }
+
+    private void initializeFavoriteButton(View v) {
+        Button button = (Button) v.findViewById(R.id.detail_favorite_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String toastMessage = String.format("%s marked as favorite!", _movie.getTitle());
+                Toast.makeText(v.getContext(), toastMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+
+
 }

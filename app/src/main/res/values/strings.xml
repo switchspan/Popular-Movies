@@ -7,6 +7,8 @@
     <string name="action_sort_popular_param">popularity.desc</string>
     <string name="action_sort_rating">Highest Rated</string>
     <string name="action_sort_rating_param">vote_average.desc</string>
+    <string name="action_sort_favorite">Favorite</string>
+    <string name="action_sort_favorite_param">favorite</string>
     <string name="api_key">237b90b4f3037d7c7197f149554644cb</string>
     <string name="movie_api_discover_endpoint">http://api.themoviedb.org/3/discover/movie</string>
     <string name="movie_api_trailer_endpoint">http://api.themoviedb.org/3/movie/</string>
