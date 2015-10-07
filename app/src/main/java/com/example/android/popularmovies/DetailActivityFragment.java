@@ -1,6 +1,5 @@
 package com.example.android.popularmovies;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,13 +35,15 @@ public class DetailActivityFragment extends Fragment {
     private ReviewAdapter _reviewsAdapter;
     private ArrayList<Review> _reviews;
     private Movie _movie;
-    private ArrayList<Movie> _favoriteMovies;
+    private FavoriteMovies _favoriteMovies;
+    //private ArrayList<Movie> _favoriteMovies;
     private FetchTrailersTask _fetchTrailersTask = null;
     private FetchReviewsTask _fetchReviewsTask = null;
     private Boolean _canInitializeTrailersFromSavedState;
     private Boolean _canInitializeReviewsFromSavedState;
 
     public DetailActivityFragment() {
+
     }
 
     @Override
@@ -69,6 +70,7 @@ public class DetailActivityFragment extends Fragment {
             initializeTrailerList(rootView);
             initializeReviewList(rootView);
             initializeFavoriteButton(rootView);
+            _favoriteMovies = new FavoriteMovies(getActivity().getApplicationContext());
         }
 
         return rootView;
@@ -80,8 +82,6 @@ public class DetailActivityFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(TRAILERS_KEY, _trailers);
         outState.putParcelableArrayList(REVIEWS_KEY, _reviews);
-        outState.putParcelableArrayList(FAVORITES_KEY, _favoriteMovies);
-
     }
 
     private void updateViewsFromIntent(View rootView, Intent intent) {
@@ -142,7 +142,7 @@ public class DetailActivityFragment extends Fragment {
     private void initializeStateFromSavedState(Bundle savedInstanceState) {
         _trailers = savedInstanceState.getParcelableArrayList(TRAILERS_KEY);
         _reviews = savedInstanceState.getParcelableArrayList(REVIEWS_KEY);
-        _favoriteMovies = savedInstanceState.getParcelableArrayList(FAVORITES_KEY);
+        //_favoriteMovies = savedInstanceState.getParcelableArrayList(FAVORITES_KEY);
         _canInitializeTrailersFromSavedState = true;
         _canInitializeReviewsFromSavedState = true;
     }
@@ -150,7 +150,7 @@ public class DetailActivityFragment extends Fragment {
     private void initializeNewState() {
         _trailers = new ArrayList<>();
         _reviews = new ArrayList<>();
-        _favoriteMovies = new ArrayList<>();
+        //_favoriteMovies = new ArrayList<>();
         _canInitializeTrailersFromSavedState = false;
         _canInitializeReviewsFromSavedState = false;
     }
@@ -217,20 +217,13 @@ public class DetailActivityFragment extends Fragment {
         Button button = (Button) v.findViewById(R.id.detail_favorite_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                updateFavoriteMoviesList(v);
+                updateFavoriteMoviesList();
             }
         });
     }
 
-    private void updateFavoriteMoviesList(View v) {
-        String toastMessage;
-        if (_favoriteMovies.contains(_movie)) {
-            _favoriteMovies.remove(_movie);
-            toastMessage = String.format("Removed %s", _movie.getTitle());
-        } else {
-            _favoriteMovies.add(_movie);
-            toastMessage = String.format("Added %s", _movie.getTitle());
-        }
-        Toast.makeText(v.getContext(), toastMessage, Toast.LENGTH_SHORT).show();
+    private void updateFavoriteMoviesList() {
+        _favoriteMovies.update(_movie);
+        _favoriteMovies.save();
     }
 }

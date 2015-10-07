@@ -28,10 +28,12 @@ public class MainActivityFragment extends Fragment {
 
     private MovieAdapter _moviesAdapter;
     private ArrayList<Movie> _movies;
-    private ArrayList<Movie> _favoriteMovies;
+    //private ArrayList<Movie> _favoriteMovies;
+    private FavoriteMovies _favoriteMovies;
     private String _sort_by;
     private FetchMoviesTask _fetchTask = null;
     private Boolean _canInitializeMoviesFromSavedState;
+    private View _currentView;
 
     public MainActivityFragment() {
     }
@@ -53,6 +55,8 @@ public class MainActivityFragment extends Fragment {
         initializeMovieAdapter();
         initializeMovieList(view);
         getMovies(_sort_by);
+        _currentView = view;
+        _favoriteMovies = new FavoriteMovies(getActivity().getApplicationContext());
 
         return view;
     }
@@ -76,7 +80,6 @@ public class MainActivityFragment extends Fragment {
         if (id == R.id.action_sort_mostpopular) {
             _sort_by = getResources().getString(R.string.action_sort_popular_param);
             _canInitializeMoviesFromSavedState = false;
-
         }
 
         if (id == R.id.action_sort_highestrated) {
@@ -101,8 +104,6 @@ public class MainActivityFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(SORT_KEY, _sort_by);
         outState.putParcelableArrayList(MOVIES_KEY, _movies);
-        outState.putParcelableArrayList(FAVORITES_KEY, _favoriteMovies);
-
     }
 
     private void initializeMovieList(View view) {
@@ -135,14 +136,12 @@ public class MainActivityFragment extends Fragment {
 
     private void intializeStateFromSavedState(Bundle savedInstanceState) {
         _movies = savedInstanceState.getParcelableArrayList(MOVIES_KEY);
-        _favoriteMovies = savedInstanceState.getParcelableArrayList(FAVORITES_KEY);
         _sort_by = savedInstanceState.getString(SORT_KEY);
         _canInitializeMoviesFromSavedState = true;
     }
 
     private void initializeNewState() {
         _movies = new ArrayList<>();
-        _favoriteMovies = new ArrayList<>();
         _sort_by = "popularity.desc";
         _canInitializeMoviesFromSavedState = false;
     }
@@ -151,8 +150,10 @@ public class MainActivityFragment extends Fragment {
         Log.v(TAG, "getMovies");
 
         if (sort_by == getResources().getString(R.string.action_sort_favorite_param)) {
-            _movies = _favoriteMovies;
+            _movies = _favoriteMovies.getFavoriteMovies();
+            _sort_by = getResources().getString(R.string.action_sort_popular_param);
             restoreMoviesFromState();
+            initializeMovieList(_currentView);
             return;
         }
 
