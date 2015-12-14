@@ -1,6 +1,9 @@
 package com.example.android.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -180,8 +184,19 @@ public class MainActivityFragment extends Fragment {
 
     private void startMovieFetchTask(String sort_by) {
         Log.v(TAG, "startMovieFetchTask");
-        _fetchTask = new FetchMoviesTask(_movies, _moviesAdapter, getActivity());
-        _fetchTask.execute(sort_by);
+//        if (isNetworkAvailable()) {
+            _fetchTask = new FetchMoviesTask(_movies, _moviesAdapter, getActivity());
+            _fetchTask.execute(sort_by);
+//        } else {
+//            Toast.makeText(getActivity().getApplicationContext(), "Unable to connect to Internet!", Toast.LENGTH_SHORT).show();
+//        }
     }
+
+//    private boolean isNetworkAvailable() {
+//        Context currentContext = getActivity().getApplicationContext();
+//        ConnectivityManager connectivityManager = (ConnectivityManager) currentContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+//    }
 
 }

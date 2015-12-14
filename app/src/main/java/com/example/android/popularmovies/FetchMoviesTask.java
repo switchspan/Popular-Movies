@@ -54,6 +54,8 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         try {
             URL url = createApiUrl(sort_by);
             urlConnection = getOpenConnectionFromUrl(url);
+
+            if (urlConnection == null) return null;
             
             InputStream inputStream = urlConnection.getInputStream();
 
@@ -105,6 +107,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         // Construct the URL for the movie database API query
         // Possible parameters are available at the Movie Database's API page, at
         // https://www.themoviedb.org/documentation/api
+        Log.v(TAG, "createApiUrl");
         final String SORTBY_PARAM = "sort_by";
         final String APIKEY_PARAM = "api_key";
         String discover_base_url;
@@ -128,6 +131,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     }
 
     private HttpURLConnection getOpenConnectionFromUrl(URL url) {
+        Log.v(TAG, "getOpenConnectionFromUrl");
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -141,6 +145,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     }
 
     private boolean hasValidParameters(String[] params) {
+        Log.v(TAG, "hasValidParameters");
         if (params.length != 1) {
             Log.e(TAG, "Invalid number of parameters passed!");
             return false;
@@ -166,6 +171,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     }
 
     private Movie mapMovieFromJsonObject(JSONObject currentMovieJson) {
+        Log.v(TAG, "mapMovieFromJsonObject");
         final String TMDB_ID = "id";
         final String TMDB_TITLE = "title";
         final String TMDB_POSTER_PATH = "poster_path";

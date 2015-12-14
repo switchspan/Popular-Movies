@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by ken.taylor on 10/7/2015.
@@ -32,11 +33,12 @@ public class FavoriteMovies {
     }
 
     public void update(Movie movie) {
-        Log.v(TAG, "update");
+        Log.v(TAG, "Updating favorited movies");
         Log.v(TAG, String.format("Movie = %s", movie.getTitle()));
         String toastMessage;
 
-        if (_favoriteMovies.size() < 1 || !_favoriteMovies.contains(movie)) {
+        if (_favoriteMovies.size() < 1 || !movie.getIsFavorite() || !_favoriteMovies.contains(movie)) {
+            movie.setIsFavorite(true);
             _favoriteMovies.add(movie);
             toastMessage = String.format("Added %s", movie.getTitle());
         } else {
@@ -47,8 +49,9 @@ public class FavoriteMovies {
     }
 
     public void save() {
-        Log.v(TAG, "saveFavoriteMovies");
+        Log.v(TAG, "Saving favorited movies");
         Gson gson = new Gson();
+        removeUnfavoritedMovies();
         String favoritesJson = gson.toJson(_favoriteMovies);
         Log.v(TAG, favoritesJson);
 
@@ -60,7 +63,7 @@ public class FavoriteMovies {
     }
 
     public void load() {
-        Log.v(TAG, "loadFavoriteMovies");
+        Log.v(TAG, "Loading favorited movies");
         SharedPreferences sharedPref = _context.getSharedPreferences(FAVORITEMOVIES, Context.MODE_PRIVATE);
         String favoritesJson = sharedPref.getString(FAVORITES_KEY, "");
         Log.v(TAG, favoritesJson);
@@ -72,6 +75,17 @@ public class FavoriteMovies {
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Movie>>() {}.getType();
         _favoriteMovies = gson.fromJson(favoritesJson, listType);
+    }
+
+    private void removeUnfavoritedMovies() {
+        Log.v(TAG, "Removing unfavorited movies");
+        Iterator<Movie> it = _favoriteMovies.iterator();
+        while (it.hasNext()) {
+            Movie movie = it.next();
+            if (!movie.getIsFavorite()) {
+                it.remove();
+            }
+        }
     }
 
 }

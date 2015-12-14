@@ -28,6 +28,7 @@ public class Movie implements Parcelable {
     private static final String KEY_OVERVIEW = "overview";
     private static final String KEY_RELEASE_DATE = "release_date";
     private static final String KEY_VOTE_AVERAGE = "vote_average";
+    private static final String KEY_ISFAVORITE = "is_favortie";
 
     private int id;
     private String title;
@@ -35,6 +36,7 @@ public class Movie implements Parcelable {
     private String overview;
     private Date release_date;
     private double vote_average;
+    private boolean is_favorite;
 
 
     public Movie(int id, String posterPath) {
@@ -83,6 +85,7 @@ public class Movie implements Parcelable {
         if (release_date != null)
             bundle.putString(KEY_RELEASE_DATE, dateFormat.format(release_date));
         bundle.putDouble(KEY_VOTE_AVERAGE, vote_average);
+        bundle.putBoolean(KEY_ISFAVORITE, is_favorite);
 
         out.writeBundle(bundle);
     }
@@ -99,6 +102,7 @@ public class Movie implements Parcelable {
             _movie.setTitle(bundle.getString(KEY_TITLE));
             _movie.setOverview(bundle.getString(KEY_OVERVIEW));
             _movie.setVoteAverage(bundle.getDouble(KEY_VOTE_AVERAGE));
+            _movie.setIsFavorite(bundle.getBoolean(KEY_ISFAVORITE));
 
             try {
                 _movie.setReleaseDate(dateFormat.parse(bundle.getString(KEY_RELEASE_DATE)));
@@ -172,6 +176,10 @@ public class Movie implements Parcelable {
     public void setVoteAverage(double vote_average) {
         this.vote_average = vote_average;
     }
+
+    public boolean getIsFavorite() { return is_favorite; }
+
+    public void setIsFavorite(boolean isFavorite) { this.is_favorite = isFavorite; }
 
     @Override
     public boolean equals(Object object) {
