@@ -223,6 +223,7 @@ public class DetailActivityFragment extends Fragment {
     }
 
     private void updateFavoriteMoviesList() {
+        _favoriteMovies.load();
         _favoriteMovies.update(_movie);
         _favoriteMovies.save();
     }

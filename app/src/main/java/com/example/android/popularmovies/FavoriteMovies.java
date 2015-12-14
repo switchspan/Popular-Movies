@@ -18,6 +18,7 @@ public class FavoriteMovies {
 
     private static final String TAG = FavoriteMovies.class.getSimpleName();
     public static final String FAVORITEMOVIES = "favoritemovies";
+    public static final String FAVORITES_KEY = "favorite_movies";
     private Context _context;
     private ArrayList<Movie> _favoriteMovies = new ArrayList<>();
 
@@ -54,20 +55,23 @@ public class FavoriteMovies {
         SharedPreferences sharedPref = _context.getSharedPreferences(FAVORITEMOVIES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
-        editor.putString("favorite_movies", favoritesJson);
+        editor.putString(FAVORITES_KEY, favoritesJson);
         editor.commit();
     }
 
     public void load() {
         Log.v(TAG, "loadFavoriteMovies");
-        SharedPreferences sharedPref = _context.getSharedPreferences("favoritemovies", Context.MODE_PRIVATE);
-        String favoritesJson = sharedPref.getString(FAVORITEMOVIES, "");
+        SharedPreferences sharedPref = _context.getSharedPreferences(FAVORITEMOVIES, Context.MODE_PRIVATE);
+        String favoritesJson = sharedPref.getString(FAVORITES_KEY, "");
         Log.v(TAG, favoritesJson);
-        if (favoritesJson.length() > 0) {
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Movie>>() {}.getType();
-            _favoriteMovies = gson.fromJson(favoritesJson, listType);
+        if (favoritesJson.length() < 1) {
+            Log.w(TAG, "No favorite movies saved!");
+            return;
         }
+
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<Movie>>() {}.getType();
+        _favoriteMovies = gson.fromJson(favoritesJson, listType);
     }
 
 }

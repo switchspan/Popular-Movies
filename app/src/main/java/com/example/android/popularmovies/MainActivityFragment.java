@@ -150,6 +150,7 @@ public class MainActivityFragment extends Fragment {
         Log.v(TAG, "getMovies");
 
         if (sort_by == getResources().getString(R.string.action_sort_favorite_param)) {
+            _favoriteMovies.load();
             _movies = _favoriteMovies.getFavoriteMovies();
             _sort_by = getResources().getString(R.string.action_sort_popular_param);
             restoreMoviesFromState();

@@ -172,4 +172,20 @@ public class Movie implements Parcelable {
     public void setVoteAverage(double vote_average) {
         this.vote_average = vote_average;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof Movie)
+        {
+            isEqual = (this.getId() == ((Movie) object).getId());
+        }
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId();
+    }
 }
